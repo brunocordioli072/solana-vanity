@@ -5,9 +5,9 @@ use solana_sdk::signer::Signer;
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
-    /// The desired prefix for the vanity address (case-sensitive)
+    /// The desired prefixes for the vanity address (case-sensitive). Can specify multiple.
     #[arg(short, long)]
-    prefix: Option<String>,
+    prefix: Vec<String>,
 
     /// Number of threads to use (defaults to available CPU cores)
     #[arg(short, long, default_value_t = num_cpus::get())]
@@ -18,21 +18,17 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    match &args.prefix {
-        Some(prefix) => {
-            println!("🔍 Searching for Solana vanity address starting with: \"{}\"", prefix);
-            println!("⚡ Using {} threads", args.threads);
-
-            let result = find_vanity_address(prefix, args.threads);
-            
-            print_result(result);            
-        },
-    
-        None => {
-            eprintln!("❌ Error: Must specify either --prefix or --suffix");
-            std::process::exit(1);
-        }
+    if args.prefix.is_empty() {
+        eprintln!("❌ Error: Must specify at least one --prefix");
+        std::process::exit(1);
     }
+
+    println!("🔍 Searching for Solana vanity address starting with: {:?}", args.prefix);
+    println!("⚡ Using {} threads", args.threads);
+
+    let result = find_vanity_address(&args.prefix, args.threads);
+    
+    print_result(result);
 }
 
 fn print_result(result: solana_vanity::VanityResult) {
@@ -42,6 +38,7 @@ fn print_result(result: solana_vanity::VanityResult) {
 
     println!("\n\n🎉 Found a vanity address!");
     println!("📍 Address: {}", pubkey_str);
+    println!("🎯 Matched prefix: \"{}\"", result.matched_prefix);
     println!("🔐 Private Key (Base58): {}", secret_key_base58);
     println!("\n📊 Performance Stats:");
     println!("   Total keys checked: {}", result.attempts);

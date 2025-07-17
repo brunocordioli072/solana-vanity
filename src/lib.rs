@@ -8,19 +8,18 @@ pub struct VanityResult {
     pub keypair: Keypair,
     pub elapsed: std::time::Duration,
     pub attempts: u64,
+    pub matched_prefix: String,
 }
 
-pub fn find_vanity_address(prefix: &str, num_threads: usize) -> VanityResult {
+pub fn find_vanity_address(prefixes: &[String], num_threads: usize) -> VanityResult {
     let start_time = Instant::now();
     let found = Arc::new(AtomicBool::new(false));
     let total_attempts = Arc::new(AtomicU64::new(0));
     
-    // Pre-convert prefix to bytes for faster comparison
-    let prefix_bytes = prefix.as_bytes();
-    let prefix_len = prefix_bytes.len();
-    
-    // Pre-allocate vectors to avoid repeated allocations
-    let prefix_vec = prefix_bytes.to_vec();
+    // Pre-convert all prefixes to bytes for faster comparison
+    let prefix_data: Vec<(Vec<u8>, usize, String)> = prefixes.iter()
+        .map(|p| (p.as_bytes().to_vec(), p.len(), p.clone()))
+        .collect();
     
     // Configure thread pool
     let pool = rayon::ThreadPoolBuilder::new()
@@ -30,6 +29,9 @@ pub fn find_vanity_address(prefix: &str, num_threads: usize) -> VanityResult {
         .expect("Failed to build thread pool");
     
     let search_result = pool.install(|| {
+        // Clone prefix data for thread access
+        let prefix_data = prefix_data.clone();
+        
         // Use thread-local storage for better cache locality
         thread_local! {
             static BASE58_BUFFER: std::cell::RefCell<Vec<u8>> = std::cell::RefCell::new(Vec::with_capacity(64));
@@ -54,23 +56,26 @@ pub fn find_vanity_address(prefix: &str, num_threads: usize) -> VanityResult {
                     let keypair = Keypair::new();
                     local_attempts += 1;
                     
-                    // Prefix check using raw bytes comparison
+                    // Check against all prefixes
                     let pubkey_bytes = keypair.pubkey().to_bytes();
                     
                     // Use thread-local buffer for base58 encoding to avoid allocations
-                    let matches = BASE58_BUFFER.with(|buffer| {
+                    let match_result = BASE58_BUFFER.with(|buffer| {
                         let mut buf = buffer.borrow_mut();
                         buf.clear();
                         
                         // Base58 encoding with pre-allocated buffer
                         let encoded = bs58::encode(&pubkey_bytes).into_string();
                         
-                        // Vectorized prefix comparison for better performance
-                        if encoded.len() >= prefix_len {
-                            fast_prefix_compare(encoded[..prefix_len].as_bytes(), &prefix_vec)
-                        } else {
-                            false
+                        // Check against each prefix
+                        for (prefix_bytes, prefix_len, prefix_str) in &prefix_data {
+                            if encoded.len() >= *prefix_len {
+                                if fast_prefix_compare(encoded[..*prefix_len].as_bytes(), prefix_bytes) {
+                                    return Some(prefix_str.clone());
+                                }
+                            }
                         }
+                        None
                     });
                     
                     // Progress reporting with reduced overhead
@@ -87,10 +92,10 @@ pub fn find_vanity_address(prefix: &str, num_threads: usize) -> VanityResult {
                         last_report = local_attempts;
                     }
                     
-                    if matches {
+                    if let Some(matched_prefix) = match_result {
                         found.store(true, Ordering::Relaxed);
                         total_attempts.fetch_add(local_attempts, Ordering::Relaxed);
-                        return Some(keypair);
+                        return Some((keypair, matched_prefix));
                     }
                 }
                 
@@ -99,10 +104,12 @@ pub fn find_vanity_address(prefix: &str, num_threads: usize) -> VanityResult {
             })
     });
     
+    let (keypair, matched_prefix) = search_result.expect("Should find a keypair");
     VanityResult {
-        keypair: search_result.expect("Should find a keypair"),
+        keypair,
         elapsed: start_time.elapsed(),
         attempts: total_attempts.load(Ordering::Relaxed),
+        matched_prefix,
     }
 }
 
