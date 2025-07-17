@@ -1,0 +1,49 @@
+# Rust build output
+/target/
+
+# Binaries
+**/*.rs.bk
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Cargo package and registry info
+/.cargo/
+/Cargo.lock
+
+# If you're publishing a library, you may want to commit Cargo.lock
+# Uncomment the next line if you're building a binary instead:
+# Cargo.lock
+
+# Backup files and editor junk
+**/*~
+**/#*#
+**/.#*
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# VSCode settings
+.vscode/
+
+# Logs and dumps
+*.log
+*.dmp
+
+# Rust Analyzer
+/.rust-analyzer.json
+/.rust-analyzer.jsonc
+
+# Clippy lints cache
+/target/.clippy-driver*
+
+# Coverage tools
+/coverage/
+/htmlcov/
+/lcov.info
+
+# Test output
+/tests/output/
+config.toml
