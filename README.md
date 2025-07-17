@@ -70,7 +70,8 @@ On modern hardware, expect speeds of 100,000+ keys/second.
 | Processor                          | Threads/Cores     | Speed                |
 |------------------------------------|-------------------|----------------------|
 | Intel Core i9-13900F               | 32 threads        | ~1,400,000 keys/sec  |
-| AMD EPYC 9K84                      | 369 threads       | ~24,000,000 keys/sec |
+| AMD EPYC 9K84                      | 369 threads       | ~23,000,000 keys/sec |
+| AMD EPYC 9754                      | 492 threads       | ~26,000,000 keys/sec |
 
 ## License
 
