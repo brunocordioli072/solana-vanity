@@ -1,6 +1,6 @@
 # Solana Vanity
 
-A CLI tool for generating Solana vanity addresses with custom prefixes. Built with Rust for maximum speed and efficiency.
+A CLI tool for generating Solana vanity addresses with custom prefixes.
 
 ## Installation
 
