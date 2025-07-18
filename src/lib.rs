@@ -81,11 +81,18 @@ pub fn find_vanity_address(prefixes: &[String], num_threads: usize) -> VanityRes
                     // Progress reporting with reduced overhead
                     if local_attempts - last_report >= 50_000 {
                         let current_total = total_attempts.fetch_add(local_attempts - last_report, Ordering::Relaxed) + (local_attempts - last_report);
-                        if current_total % 250_000 < 50_000 { // Report roughly every 250k attempts
+                        if current_total % 2_000_000 < 50_000 { // Report roughly every 250k attempts
                             let elapsed = start_time.elapsed();
                             let rate = current_total as f64 / elapsed.as_secs_f64();
-                            print!("\rSearching... {} keys checked | {:.0} keys/sec | Elapsed: {:.1}s", 
-                                     current_total, rate, elapsed.as_secs_f64());
+
+                            // Format elapsed time as minutes:seconds
+                            let total_secs = elapsed.as_secs();
+                            let minutes = total_secs / 60;
+                            let seconds = total_secs % 60;
+
+                            print!("\rSearching... {} keys checked | {:.0} keys/sec | Elapsed: {}m:{:02}s", 
+                                 current_total, rate, minutes, seconds);
+
                             use std::io::{self, Write};
                             io::stdout().flush().ok();
                         }
