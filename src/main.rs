@@ -36,35 +36,17 @@ fn print_result(result: solana_vanity::VanityResult) {
     let secret_key_bytes = result.keypair.to_bytes();
     let secret_key_base58 = bs58::encode(&secret_key_bytes).into_string();
 
+    let total_secs = result.elapsed.as_secs();
+
+    let minutes = total_secs / 60;
+    let seconds = total_secs % 60;
+
     println!("\n\n🎉 Found a vanity address!");
     println!("📍 Address: {}", pubkey_str);
     println!("🎯 Matched prefix: \"{}\"", result.matched_prefix);
     println!("🔐 Private Key (Base58): {}", secret_key_base58);
     println!("\n📊 Performance Stats:");
     println!("   Total keys checked: {}", result.attempts);
-    println!("   Time elapsed: {:.2}s", result.elapsed.as_secs_f64());
-    println!("   Average speed: {:.0} keys/sec", result.attempts as f64 / result.elapsed.as_secs_f64());
-    
-    // Calculate estimated difficulty
-    let difficulty = estimate_difficulty(&pubkey_str);
-    if let Some(prob) = difficulty {
-        println!("   Estimated difficulty: 1 in {:.0}", 1.0 / prob);
-    }
-}
-
-fn estimate_difficulty(address: &str) -> Option<f64> {
-    // Estimate probability based on Base58 alphabet (58 characters)
-    // This is a rough estimate for prefixes/suffixes
-    let base58_chars: f64 = 58.0;
-    
-    // Count consecutive characters from start (prefix)
-    let prefix_len = address.chars()
-        .take_while(|c| c.is_alphanumeric())
-        .count();
-    
-    if prefix_len > 1 {
-        Some(1.0 / base58_chars.powi(prefix_len as i32 - 1))
-    } else {
-        None
-    }
+    println!("   Time elapsed: {}m:{:02}s", minutes, seconds);
+    println!("   Average speed: {:.0} keys/sec", result.attempts as f64 / total_secs as f64);
 }

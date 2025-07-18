@@ -81,7 +81,7 @@ pub fn find_vanity_address(prefixes: &[String], num_threads: usize) -> VanityRes
                     // Progress reporting with reduced overhead
                     if local_attempts - last_report >= 50_000 {
                         let current_total = total_attempts.fetch_add(local_attempts - last_report, Ordering::Relaxed) + (local_attempts - last_report);
-                        if current_total % 2_000_000 < 50_000 { // Report roughly every 250k attempts
+                        if current_total % 250_000 < 50_000 { // Report roughly every 250k attempts
                             let elapsed = start_time.elapsed();
                             let rate = current_total as f64 / elapsed.as_secs_f64();
 

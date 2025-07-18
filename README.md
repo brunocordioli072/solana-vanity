@@ -52,7 +52,6 @@ Searching... 1250000 keys checked | 125000 keys/sec | Elapsed: 10.0s
    Total keys checked: 1523847
    Time elapsed: 12.15s
    Average speed: 125411 keys/sec
-   Estimated difficulty: 1 in 195112
 ```
 
 ## Performance
@@ -78,4 +77,3 @@ On modern hardware, expect speeds of 100,000+ keys/second.
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details
-
