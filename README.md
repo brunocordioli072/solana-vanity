@@ -12,7 +12,7 @@ git clone https://github.com/brunocordioli072/solana-vanity.git
 cd solana-vanity
 
 # Run with release mode
-cargo run  --release --  --prefix ABC
+cargo run --release -- --prefix ABC
 
 # Build with optimizations
 cargo build --release
