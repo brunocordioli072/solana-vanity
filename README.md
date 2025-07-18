@@ -11,9 +11,6 @@ A CLI tool for generating Solana vanity addresses with custom prefixes.
 git clone https://github.com/brunocordioli072/solana-vanity.git
 cd solana-vanity
 
-# Run with release mode
-cargo run --release -- --prefix ABC
-
 # Build with optimizations
 cargo build --release
 
@@ -23,6 +20,11 @@ cargo build --release
 ## Usage
 
 Generate a Solana address starting with a specific prefix:
+
+```bash
+# Run with release mode
+cargo run --release -- --prefix ABC
+```
 
 ```bash
 # Generate address starting with "Sol"
