@@ -138,11 +138,3 @@ fn fast_prefix_compare(encoded: &[u8], prefix: &[u8]) -> bool {
             && encoded[prefix.len() - (prefix.len() % 8)..prefix.len()] == prefix[prefix.len() - (prefix.len() % 8)..]
     }
 }
-
-
-/// Batch generator for testing performance
-pub fn generate_keypair_batch(batch_size: usize) -> Vec<Keypair> {
-    (0..batch_size).into_par_iter()
-        .map(|_| Keypair::new())
-        .collect()
-}
