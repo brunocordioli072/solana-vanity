@@ -36,6 +36,8 @@ fn print_result(result: solana_vanity::VanityResult) {
     let secret_key_bytes = result.keypair.to_bytes();
     let secret_key_base58 = bs58::encode(&secret_key_bytes).into_string();
 
+    write_match_to_file(&pubkey_str, &secret_key_base58);
+    
     let total_secs = result.elapsed.as_secs();
 
     let minutes = total_secs / 60;
@@ -49,4 +51,17 @@ fn print_result(result: solana_vanity::VanityResult) {
     println!("   Total keys checked: {}", result.attempts);
     println!("   Time elapsed: {}m:{:02}s", minutes, seconds);
     println!("   Average speed: {:.0} keys/sec", result.attempts as f64 / total_secs as f64);
+}
+
+fn write_match_to_file(pubkey: &str, secret: &str) {
+    use std::fs::OpenOptions;
+    use std::io::Write;
+
+    let mut file = OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("matches.txt")
+        .unwrap();
+
+    writeln!(file, "{} | {}", pubkey, secret).unwrap();
 }
