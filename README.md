@@ -53,20 +53,9 @@ Searching... 1250000 keys checked | 125000 keys/sec | Elapsed: 10.0s
    Time elapsed: 12.15s
    Average speed: 125411 keys/sec
 ```
-
 ## Performance
 
-The generator uses several optimization techniques:
-
-- **Parallel processing** with Rayon for multi-core utilization
-- **Thread-local buffers** to minimize allocations
-- **Batch processing** to reduce coordination overhead
-- **Optimized Base58 encoding** with pre-allocated buffers
-- **SIMD-optimized prefix comparison** for longer prefixes
-
 On modern hardware, expect speeds of 100,000+ keys/second.
-
-## Performance tests
 
 | Processor                          | Threads/Cores     | Speed                |
 |------------------------------------|-------------------|----------------------|
