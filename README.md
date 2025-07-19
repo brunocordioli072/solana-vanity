@@ -24,6 +24,8 @@ Generate a Solana address starting with a specific prefix:
 ```bash
 # Run with release mode
 cargo run --release -- --prefix ABC
+
+cargo run --release -- --prefix AAA --prefix BBB --prefix CCC
 ```
 
 ```bash
@@ -40,7 +42,7 @@ solana-vanity --help
 ## Example Output
 
 ```
-🔍 Searching for Solana vanity address starting with: "Sol"
+🔍 Searching for Solana vanity address starting with: ["Sol"]
 ⚡ Using 16 threads
 Searching... 1250000 keys checked | 125000 keys/sec | Elapsed: 10.0s
 
