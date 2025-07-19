@@ -47,3 +47,4 @@
 # Test output
 /tests/output/
 config.toml
+matches.txt
