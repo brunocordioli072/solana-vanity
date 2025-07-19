@@ -25,6 +25,7 @@ Generate a Solana address starting with a specific prefix:
 # Run with release mode
 cargo run --release -- --prefix ABC
 
+# Run with multiple prefixes
 cargo run --release -- --prefix AAA --prefix BBB --prefix CCC
 ```
 
