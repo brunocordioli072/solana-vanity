@@ -43,8 +43,8 @@ fn print_result(result: solana_vanity::VanityResult) {
     let seconds = total_secs % 60;
 
     println!("\n\n🎉 Found a vanity address!");
-    println!("📍 Address: {}", pubkey_str);
     println!("🎯 Matched prefix: \"{}\"", result.matched_prefix);
+    println!("📍 Address: {}", pubkey_str);
     println!("🔐 Private Key (Base58): {}", secret_key_base58);
     write_match_to_file(&pubkey_str, &secret_key_base58);
 

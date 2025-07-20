@@ -37,8 +37,8 @@ cargo run --release -- --prefix AAA --prefix BBB --prefix CCC
 🚀 Searching... 3,000,000 keys checked | 1,500,000 keys/sec | Elapsed: 0m:02s
 
 🎉 Found a vanity address!
-📍 Address: SolEzf1hwj6g8kqhUmHMBiAdRZjAmJX2TCevDKbfCNu
 🎯 Matched prefix: "Sol"
+📍 Address: SolEzf1hwj6g8kqhUmHMBiAdRZjAmJX2TCevDKbfCNu
 🔐 Private Key (Base58): 33a8EJBps5m1M3MTDo9MkTEAxujvdxL5JjFU...
 💾 Saved to '/home/.../matches.txt'
 
