@@ -1,5 +1,5 @@
 use clap::Parser;
-use solana_vanity::{find_vanity_address};
+use solana_vanity::{find_vanity_address, format_number};
 use solana_sdk::signer::Signer;
 
 #[derive(Parser, Debug)]
@@ -36,7 +36,6 @@ fn print_result(result: solana_vanity::VanityResult) {
     let secret_key_bytes = result.keypair.to_bytes();
     let secret_key_base58 = bs58::encode(&secret_key_bytes).into_string();
 
-    write_match_to_file(&pubkey_str, &secret_key_base58);
     
     let total_secs = result.elapsed.as_secs();
 
@@ -47,21 +46,28 @@ fn print_result(result: solana_vanity::VanityResult) {
     println!("📍 Address: {}", pubkey_str);
     println!("🎯 Matched prefix: \"{}\"", result.matched_prefix);
     println!("🔐 Private Key (Base58): {}", secret_key_base58);
+    write_match_to_file(&pubkey_str, &secret_key_base58);
+
     println!("\n📊 Performance Stats:");
-    println!("   Total keys checked: {}", result.attempts);
+    println!("   Total keys checked: {}", format_number(result.attempts));
     println!("   Time elapsed: {}m:{:02}s", minutes, seconds);
-    println!("   Average speed: {:.0} keys/sec", result.attempts as f64 / total_secs as f64);
+    println!("   Average speed: {} keys/sec", format_number(result.attempts / total_secs));
 }
 
 fn write_match_to_file(pubkey: &str, secret: &str) {
     use std::fs::OpenOptions;
     use std::io::Write;
+    use std::path::Path;
+
+    let file_path = "matches.txt";
 
     let mut file = OpenOptions::new()
         .create(true)
         .append(true)
-        .open("matches.txt")
+        .open(file_path)
         .unwrap();
 
     writeln!(file, "{} | {}", pubkey, secret).unwrap();
+
+    println!("💾 Saved to '{}'", Path::new(file_path).canonicalize().unwrap().display());
 }

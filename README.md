@@ -33,17 +33,19 @@ cargo run --release -- --prefix AAA --prefix BBB --prefix CCC
 
 ```
 🔍 Searching for Solana vanity address starting with: ["Sol"]
-⚡ Using 16 threads
-Searching... 1250000 keys checked | 125000 keys/sec | Elapsed: 10.0s
+⚡ Using 32 threads
+🚀 Searching... 5,000,000 keys checked | 1,500,000 keys/sec | Elapsed: 0m:02s
 
 🎉 Found a vanity address!
-📍 Address: Sol7K9dqPPSh3udvYXQz4vvvJPPu8Mf8bxDmVvFqqr3
-🔐 Private Key (Base58): 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn...
+📍 Address: SolEzf1hwj6g8kqhUmHMBiAdRZjAmJX2TCevDKbfCNu
+🎯 Matched prefix: "Sol"
+🔐 Private Key (Base58): 33a8EJBps5m1M3MTDo9MkTEAxujvdxL5JjFU...
+💾 Saved to '/home/.../matches.txt'
 
 📊 Performance Stats:
-   Total keys checked: 1523847
-   Time elapsed: 12.15s
-   Average speed: 125411 keys/sec
+   Total keys checked: 5,000,000
+   Time elapsed: 0m:02s
+   Average speed: 1,500,000 keys/sec
 ```
 ## Performance
 

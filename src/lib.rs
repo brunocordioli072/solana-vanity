@@ -89,9 +89,11 @@ pub fn find_vanity_address(prefixes: &[String], num_threads: usize) -> VanityRes
                             let total_secs = elapsed.as_secs();
                             let minutes = total_secs / 60;
                             let seconds = total_secs % 60;
+                            let formatted_total = format_number(current_total);
+                            let formatted_rate = format_number(rate as u64);
 
-                            print!("\rSearching... {} keys checked | {:.0} keys/sec | Elapsed: {}m:{:02}s", 
-                                 current_total, rate, minutes, seconds);
+                            print!("\r🚀 Searching... {} keys checked | {} keys/sec | Elapsed: {}m:{:02}s", 
+                                formatted_total, formatted_rate, minutes, seconds);
 
                             use std::io::{self, Write};
                             io::stdout().flush().ok();
@@ -137,4 +139,26 @@ fn fast_prefix_compare(encoded: &[u8], prefix: &[u8]) -> bool {
             .all(|(a, b)| a == b)
             && encoded[prefix.len() - (prefix.len() % 8)..prefix.len()] == prefix[prefix.len() - (prefix.len() % 8)..]
     }
+}
+
+
+pub fn format_number(num: u64) -> String {
+    let num_str = num.to_string();
+    let num_digits = num_str.len();
+    let num_commas = (num_digits - 1) / 3;
+    
+    let mut result = Vec::with_capacity(num_digits + num_commas);
+    
+    let first_group_size = num_digits % 3;
+    let first_group_size = if first_group_size == 0 { 3 } else { first_group_size };
+    
+    result.extend_from_slice(&num_str.as_bytes()[..first_group_size]);
+    
+    let remaining = &num_str.as_bytes()[first_group_size..];
+    for chunk in remaining.chunks(3) {
+        result.push(b',');
+        result.extend_from_slice(chunk);
+    }
+    
+    String::from_utf8(result).unwrap()
 }
