@@ -29,14 +29,6 @@ cargo run --release -- --prefix ABC
 cargo run --release -- --prefix AAA --prefix BBB --prefix CCC
 ```
 
-```bash
-# Generate address starting with "Sol"
-solana-vanity --prefix Sol
-
-# Use specific number of threads
-solana-vanity --prefix Sol --threads 8
-```
-
 ## Example Output
 
 ```
