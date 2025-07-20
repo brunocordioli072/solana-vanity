@@ -15,7 +15,7 @@ cd solana-vanity
 cargo build --release
 
 # Run the binary
-./target/release/solana-vanity --prefix ABC
+./target/release/solana-vanity --prefix AAA
 ```
 ## Usage
 
@@ -23,10 +23,13 @@ Generate a Solana address starting with a specific prefix:
 
 ```bash
 # Run with release mode
-cargo run --release -- --prefix ABC
+cargo run --release -- --prefix AAA
 
 # Run with multiple prefixes
 cargo run --release -- --prefix AAA --prefix BBB --prefix CCC
+
+# Run with fixed threads
+cargo run --release -- --prefix AAA --threads 8
 ```
 
 ## Example Output
