@@ -49,7 +49,7 @@ cargo run --release -- --prefix AAA --prefix BBB --prefix CCC
 ```
 ## Performance
 
-On modern hardware, expect speeds of 100,000+ keys/second.
+On modern hardware, expect speeds of 1,000,000+ keys/second.
 
 | Processor                          | Threads/Cores     | Speed                |
 |------------------------------------|-------------------|----------------------|
