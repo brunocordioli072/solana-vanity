@@ -1,6 +1,6 @@
 # Solana Vanity
 
-A CLI tool for generating Solana vanity addresses with custom prefixes.
+*A CLI tool for generating Solana vanity addresses with custom prefixes. 2–3x faster than `solana-keygen grind`.*
 
 ## Installation
 
