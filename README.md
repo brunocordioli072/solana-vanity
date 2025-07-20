@@ -35,9 +35,6 @@ solana-vanity --prefix Sol
 
 # Use specific number of threads
 solana-vanity --prefix Sol --threads 8
-
-# Get help
-solana-vanity --help
 ```
 
 ## Example Output
